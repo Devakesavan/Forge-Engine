@@ -1,0 +1,37 @@
+/* ---------- TESTIMONIALS ---------- */
+.testimonials {
+  background: linear-gradient(180deg, #0b0b1a, #1a1a2e);
+}
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.testi-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 30px;
+  border-left: 5px solid #ffd200;
+  transition: 0.3s;
+}
+.testi-card:hover {
+  background: rgba(255, 210, 0, 0.08);
+  transform: translateX(8px);
+}
+.testi-card .stars {
+  color: #ffd200;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+.testi-card p {
+  font-style: italic;
+  color: #ccc;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+.testi-card .author {
+  font-weight: 700;
+  color: #f7971e;
+}

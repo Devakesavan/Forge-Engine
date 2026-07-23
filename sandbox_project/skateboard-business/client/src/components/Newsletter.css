@@ -1,0 +1,71 @@
+/* ---------- NEWSLETTER ---------- */
+.newsletter {
+  background: linear-gradient(135deg, #f7971e, #ffd200);
+  text-align: center;
+  padding: 80px 20px;
+}
+.newsletter h2 {
+  font-family: 'Bangers', cursive;
+  font-size: 3rem;
+  color: #0b0b1a;
+  margin-bottom: 15px;
+}
+.newsletter p {
+  color: #2a1a00;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+}
+.newsletter form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.newsletter input {
+  flex: 1;
+  min-width: 200px;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  outline: none;
+}
+.newsletter button {
+  padding: 16px 35px;
+  font-family: 'Bangers', cursive;
+  font-size: 1.3rem;
+  color: #fff;
+  background: #0b0b1a;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.newsletter button:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+.newsletter button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.newsletter-message {
+  margin-bottom: 20px;
+  padding: 12px 24px;
+  background: rgba(11, 11, 26, 0.12);
+  border-radius: 50px;
+  font-weight: 700;
+  color: #0b0b1a;
+  display: inline-block;
+  animation: popIn 0.4s ease;
+}
+.newsletter-message.error {
+  background: rgba(255, 60, 60, 0.2);
+  color: #5a0000;
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "radride-skateboards",
+  "version": "1.0.0",
+  "description": "🛹 RadRide Skateboards – Full-stack React + Node.js website",
+  "private": true,
+  "scripts": {
+    "install:all": "cd server && npm install && cd ../client && npm install",
+    "start:server": "cd server && npm start",
+    "start:client": "cd client && npm start",
+    "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "build": "cd client && npm run build",
+    "dev:server": "cd server && npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

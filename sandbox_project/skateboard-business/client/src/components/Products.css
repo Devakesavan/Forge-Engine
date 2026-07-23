@@ -1,0 +1,119 @@
+/* ---------- PRODUCTS ---------- */
+.products {
+  background: linear-gradient(180deg, #0b0b1a 0%, #1a1a2e 100%);
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.product-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 30px 20px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 210, 0, 0.15);
+  transition: 0.4s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(255, 210, 0, 0.08), transparent, rgba(247, 151, 30, 0.08), transparent);
+  animation: rotateGlow 6s linear infinite;
+  opacity: 0;
+  transition: 0.4s;
+}
+.product-card:hover::before {
+  opacity: 1;
+}
+@keyframes rotateGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.product-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  border-color: #ffd200;
+  box-shadow: 0 20px 60px rgba(247, 151, 30, 0.25);
+}
+.product-card .icon {
+  font-size: 4rem;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+}
+.product-card h3 {
+  font-family: 'Bangers', cursive;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+.product-card p {
+  color: #aaa;
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+}
+.product-card .price {
+  font-family: 'Bangers', cursive;
+  font-size: 1.6rem;
+  color: #ffd200;
+  position: relative;
+  z-index: 1;
+}
+.product-card .buy-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 30px;
+  font-family: 'Bangers', cursive;
+  font-size: 1.2rem;
+  color: #0b0b1a;
+  background: linear-gradient(135deg, #ff6b6b, #ff3c3c);
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  position: relative;
+  z-index: 1;
+}
+.product-card .buy-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(255, 60, 60, 0.5);
+}
+
+/* Order toast notification */
+.order-toast {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #f7971e, #ffd200);
+  color: #0b0b1a;
+  font-family: 'Bangers', cursive;
+  font-size: 1.2rem;
+  padding: 16px 30px;
+  border-radius: 50px;
+  z-index: 200;
+  box-shadow: 0 8px 30px rgba(247, 151, 30, 0.5);
+  animation: slideDown 0.4s ease;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateX(-50%) translateY(-30px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@media (max-width: 480px) {
+  .product-grid { grid-template-columns: 1fr; }
+}

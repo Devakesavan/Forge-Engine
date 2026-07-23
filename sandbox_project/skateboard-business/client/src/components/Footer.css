@@ -1,0 +1,28 @@
+/* ---------- FOOTER ---------- */
+footer {
+  position: relative;
+  z-index: 1;
+  background: #0b0b1a;
+  padding: 40px 20px;
+  text-align: center;
+  border-top: 2px solid rgba(255, 210, 0, 0.2);
+}
+footer .socials {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 20px;
+}
+footer .socials a {
+  font-size: 1.8rem;
+  transition: 0.3s;
+  display: inline-block;
+}
+footer .socials a:hover {
+  transform: translateY(-5px) scale(1.2);
+  color: #ffd200;
+}
+footer p {
+  color: #888;
+  font-size: 0.9rem;
+}

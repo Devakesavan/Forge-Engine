@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+build/
+dist/
+.qwenagent-session.json
+node_modules/
+sandbox_project/skateboard-business/node_modules/
+sandbox_project/skateboard-business/client/build/
+sandbox_project/skateboard-business/client/node_modules/
+sandbox_project/skateboard-business/server/node_modules/
+sandbox_project/skateboard-business/node_modules/

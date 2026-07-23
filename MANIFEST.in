@@ -1,0 +1,12 @@
+include README.md
+include LICENSE
+include pyproject.toml
+recursive-include forge *.py
+recursive-include harness *.py
+recursive-exclude * __pycache__ *.py[cod]
+recursive-exclude .pytest_cache *
+recursive-exclude dist *
+recursive-exclude build *
+recursive-exclude *.egg-info *
+recursive-exclude sandbox_project *
+recursive-exclude tests *
