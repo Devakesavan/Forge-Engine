@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/forge--engine-0.1.0-blue" alt="version">
+  <a href="https://pypi.org/project/forge-engine/"><img src="https://img.shields.io/pypi/v/forge-engine?color=blue" alt="PyPI"></a>
   <img src="https://img.shields.io/badge/python-%3E%3D3.10-green" alt="python">
   <img src="https://img.shields.io/badge/license-MIT-purple" alt="license">
 </p>
@@ -9,6 +9,8 @@
 **FORGE** is a terminal-based AI coding-agent harness that lets LLMs autonomously work on software tasks inside a sandboxed environment. It gives the model a fixed set of tools — read, write, list, and run commands — then independently **verifies completion** rather than trusting the model's own claim.
 
 Works with any OpenAI-compatible API (OpenRouter, Ollama, local LLMs, etc.).
+
+Available on **PyPI**: [forge-engine](https://pypi.org/project/forge-engine/)
 
 ---
 
