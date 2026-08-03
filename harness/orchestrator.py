@@ -7,6 +7,7 @@ import difflib
 import hashlib
 import json
 import os
+import re
 
 import requests
 
@@ -47,6 +48,14 @@ FAILURE_KEYWORDS = {"cannot", "cannot be", "fail", "failed", "not possible", "un
 def _is_failure_summary(summary: str) -> bool:
     lower = summary.lower()
     return any(kw in lower for kw in FAILURE_KEYWORDS)
+
+
+def _deployment_requested(task: str) -> bool:
+    """Only enable cloud deployment tools for explicit AWS/EC2 deploy prompts."""
+    lower = task.lower()
+    wants_deploy = re.search(r"\b(deploy|deployment|host|publish)\b", lower) is not None
+    target_aws = re.search(r"\b(aws|ec2)\b", lower) is not None
+    return wants_deploy and target_aws
 
 
 def _detect_verify_command(sandbox: Sandbox) -> str | None:
@@ -228,6 +237,7 @@ def run(
     repeated_count = 0
     last_summary = ""
     work_performed = False
+    allow_deployment = _deployment_requested(task)
 
     for turn in range(1, MAX_TURNS + 1):
         emit("turn_start", text=f"--- turn {turn} ---", turn=turn)
@@ -303,8 +313,8 @@ def run(
                     before = ""
                 write_diff = _build_write_diff(args["path"], before, args["content"])
 
-            result = dispatch_tool(sandbox, name, args)
-            if name in {"write_file", "run_command"} and not result.startswith("ERROR:"):
+            result = dispatch_tool(sandbox, name, args, allow_deployment=allow_deployment)
+            if name in {"write_file", "run_command", "deploy_dockerhub_to_ec2"} and not result.startswith("ERROR:"):
                 did_work = True
                 work_performed = True
             capped = cap_tool_result(result)

@@ -25,6 +25,8 @@ class Transcript:
                     "write_file, list_files, run_command) to inspect and edit files in order to "
                     "complete the task. Do NOT call task_complete until you have actually created "
                     "or modified files using write_file, or executed commands using run_command. "
+                    "Only call deploy_dockerhub_to_ec2 when the user explicitly asks to deploy "
+                    "the app to AWS or EC2; normal coding tasks must not deploy anything. "
                     "Acknowledging or summarizing the task is not completion. "
                     "All paths are relative to the sandbox root. When you believe the task "
                     "is done, call task_complete with a concise summary. Shell commands run "
