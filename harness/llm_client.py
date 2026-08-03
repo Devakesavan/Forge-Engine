@@ -22,25 +22,29 @@ def _format_api_error(payload: dict) -> str:
 class LocalLLMClient:
     """Chat-completions client for OpenRouter or local OpenAI-compatible servers."""
 
-    def __init__(self, base_url: str, model: str, api_key: str = "not-needed"):
+    def __init__(self, base_url: str, model: str, api_key: str = "not-needed", max_tokens: int | None = None):
         self.base_url = base_url.rstrip("/")
         self.model = model
         self.api_key = api_key
+        self.max_tokens = max_tokens
 
     def chat(self, messages, tools, temperature: float = 0.2) -> dict:
+        payload = {
+            "model": self.model,
+            "messages": messages,
+            "tools": tools,
+            "tool_choice": "auto",
+            "temperature": temperature,
+        }
+        if self.max_tokens:
+            payload["max_tokens"] = self.max_tokens
         response = requests.post(
             f"{self.base_url}/chat/completions",
             headers={
                 "Authorization": f"Bearer {self.api_key}",
                 "Content-Type": "application/json",
             },
-            json={
-                "model": self.model,
-                "messages": messages,
-                "tools": tools,
-                "tool_choice": "auto",
-                "temperature": temperature,
-            },
+            json=payload,
             timeout=300,
         )
         try:

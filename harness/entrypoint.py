@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
 from .cli import main as cli_main
-from .config import DEFAULT_BASE_URL, DEFAULT_MODEL
+from .config import DEFAULT_BASE_URL, DEFAULT_MAX_TOKENS, DEFAULT_MODEL, MAX_TOKENS_ENV
 from .orchestrator import run
 
 
@@ -22,6 +23,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--sandbox", default=DEFAULT_SANDBOX_ROOT, help="Sandbox root for one-shot mode.")
     parser.add_argument("--model", default=DEFAULT_MODEL, help="OpenRouter model name.")
     parser.add_argument("--base-url", default=DEFAULT_BASE_URL, help="OpenAI-compatible API base URL.")
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=int(os.environ.get(MAX_TOKENS_ENV, DEFAULT_MAX_TOKENS)),
+        help="Maximum output tokens per LLM request (default: 2048, env: FORGE_MAX_TOKENS).",
+    )
     return parser.parse_args(argv)
 
 
@@ -37,5 +44,6 @@ def main(argv: list[str] | None = None) -> None:
         args.verify or DEFAULT_VERIFY_COMMAND,
         base_url=args.base_url,
         model=args.model,
+        max_tokens=args.max_tokens,
     )
     print(result)

@@ -6,7 +6,7 @@ import os
 import shutil
 from pathlib import Path
 
-from .config import API_KEY_ENV, DEFAULT_BASE_URL
+from .config import API_KEY_ENV, DEFAULT_BASE_URL, DEFAULT_MAX_TOKENS, MAX_TOKENS_ENV
 from .orchestrator import run
 from .sandbox import Sandbox, SandboxError
 from .session import DEFAULT_MODEL, load_session, save_session
@@ -14,6 +14,7 @@ from .transcript import Transcript
 
 
 BASE_URL = DEFAULT_BASE_URL
+MAX_TOKENS = int(os.environ.get(MAX_TOKENS_ENV, DEFAULT_MAX_TOKENS))
 
 try:
     from rich.align import Align
@@ -451,6 +452,7 @@ def main() -> None:
                 verify_command,
                 base_url=BASE_URL,
                 model=model,
+                max_tokens=MAX_TOKENS,
                 transcript=transcript,
                 on_event=renderer,
             )
@@ -476,6 +478,7 @@ def main() -> None:
                         verify_command,
                         base_url=BASE_URL,
                         model=model,
+                        max_tokens=MAX_TOKENS,
                         transcript=transcript,
                         on_event=renderer,
                     )

@@ -203,6 +203,7 @@ def run(
     base_url: str = DEFAULT_BASE_URL,
     model: str = DEFAULT_MODEL,
     api_key: str | None = None,
+    max_tokens: int | None = None,
     transcript: Transcript | None = None,
     on_event=None,
     command_timeout: int = 300,
@@ -213,7 +214,12 @@ def run(
         else (lambda event_type, **data: _plain_emit(event_type, data))
     )
     sandbox = Sandbox(sandbox_root, command_timeout=command_timeout)
-    client = LocalLLMClient(base_url=base_url, model=model, api_key=api_key or os.environ.get(API_KEY_ENV, ""))
+    client = LocalLLMClient(
+        base_url=base_url,
+        model=model,
+        api_key=api_key or os.environ.get(API_KEY_ENV, ""),
+        max_tokens=max_tokens,
+    )
     if transcript is None:
         transcript = Transcript(task)
     else:
