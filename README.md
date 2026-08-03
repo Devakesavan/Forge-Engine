@@ -154,20 +154,43 @@ Harness returns http://PUBLIC_IP:PORT
 
 Install Docker locally and make sure the Docker daemon is running.
 
-Configure Docker Hub credentials:
+#### Configure once with `forge configure`
+
+Instead of exporting variables every session, configure everything once:
+
+```bash
+forge configure
+```
+
+This interactively prompts for and persists:
+
+- Docker Hub username and access token
+- AWS default region
+- Default EC2 instance type
+- Security group name
+
+Settings are saved to `~/.config/forge/config.json` (override the location with `FORGE_CONFIG_DIR`). The token is stored in plain text locally, so protect the file:
+
+```bash
+chmod 600 ~/.config/forge/config.json
+```
+
+Environment variables still take precedence over saved settings, which is useful for CI:
 
 ```bash
 export DOCKERHUB_USERNAME="your-dockerhub-username"
 export DOCKERHUB_TOKEN="your-dockerhub-access-token"
 ```
 
-Configure AWS credentials:
+#### AWS credentials
+
+AWS credentials are handled by the standard AWS tooling — no exports needed:
 
 ```bash
-export AWS_ACCESS_KEY_ID="your-access-key"
-export AWS_SECRET_ACCESS_KEY="your-secret-key"
-export AWS_DEFAULT_REGION="ap-south-1"
+aws configure
 ```
+
+boto3 automatically reads `~/.aws/credentials` and `~/.aws/config`, so once you have run `aws configure` you are done. `forge configure` only stores the FORGE-side defaults such as the deployment region.
 
 The Docker Hub repository must already exist and should be public for the first version, so EC2 can pull it without receiving registry credentials.
 
@@ -193,7 +216,7 @@ Terminate command: aws ec2 terminate-instances --instance-ids i-0123456789abcdef
 - Deployment is opt-in through explicit AWS/EC2 deployment prompts.
 - Only `t2.micro` and `t3.micro` instance types are allowed by default.
 - Only common app ports are allowed by default: `80`, `3000`, `5000`, `8000`, `8080`.
-- AWS and Docker Hub secrets are read from environment variables and are never sent to the model.
+- AWS and Docker Hub secrets are never sent to the model.
 - EC2 instances cost money until stopped or terminated; FORGE prints a terminate command after deployment.
 
 ---

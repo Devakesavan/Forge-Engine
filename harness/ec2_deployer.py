@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import os
 import re
 import subprocess
 import time
@@ -15,9 +14,12 @@ from .config import (
     ALLOWED_EC2_INSTANCE_TYPES,
     DEFAULT_AWS_REGION,
     DEFAULT_EC2_INSTANCE_TYPE,
-    DEFAULT_EC2_SECURITY_GROUP,
-    DOCKERHUB_TOKEN_ENV,
-    DOCKERHUB_USERNAME_ENV,
+)
+from .settings import (
+    default_aws_region,
+    default_instance_type,
+    default_security_group,
+    dockerhub_credentials,
 )
 
 
@@ -76,12 +78,12 @@ def _validate_port(value: int, field: str) -> int:
 
 
 def _validate_config(args: dict) -> DeployConfig:
-    instance_type = args.get("instance_type", DEFAULT_EC2_INSTANCE_TYPE)
+    instance_type = args.get("instance_type") or default_instance_type()
     if instance_type not in ALLOWED_EC2_INSTANCE_TYPES:
         allowed = ", ".join(sorted(ALLOWED_EC2_INSTANCE_TYPES))
         raise DeploymentError(f"instance_type must be one of: {allowed}")
 
-    region = args.get("region") or os.environ.get("AWS_DEFAULT_REGION") or DEFAULT_AWS_REGION
+    region = args.get("region") or default_aws_region() or DEFAULT_AWS_REGION
     if not re.fullmatch(r"[a-z]{2}-[a-z]+-\d", region):
         raise DeploymentError(f"Invalid AWS region: {region!r}")
 
@@ -134,10 +136,11 @@ def _default_vpc_id(ec2) -> str:
 
 
 def _ensure_security_group(ec2, app_port: int) -> str:
+    group_name = default_security_group()
     vpc_id = _default_vpc_id(ec2)
     groups = ec2.describe_security_groups(
         Filters=[
-            {"Name": "group-name", "Values": [DEFAULT_EC2_SECURITY_GROUP]},
+            {"Name": "group-name", "Values": [group_name]},
             {"Name": "vpc-id", "Values": [vpc_id]},
         ]
     )["SecurityGroups"]
@@ -145,7 +148,7 @@ def _ensure_security_group(ec2, app_port: int) -> str:
         group_id = groups[0]["GroupId"]
     else:
         group_id = ec2.create_security_group(
-            GroupName=DEFAULT_EC2_SECURITY_GROUP,
+            GroupName=group_name,
             Description="FORGE Engine Docker deployment access",
             VpcId=vpc_id,
         )["GroupId"]
@@ -192,10 +195,9 @@ def deploy_dockerhub_to_ec2(sandbox_root: Path, args: dict) -> dict:
     if not dockerfile.is_file():
         raise DeploymentError("Dockerfile is missing. Create a Dockerfile before calling deploy_dockerhub_to_ec2.")
 
-    username = os.environ.get(DOCKERHUB_USERNAME_ENV)
-    token = os.environ.get(DOCKERHUB_TOKEN_ENV)
+    username, token = dockerhub_credentials()
     if not username or not token:
-        raise DeploymentError(f"Set {DOCKERHUB_USERNAME_ENV} and {DOCKERHUB_TOKEN_ENV} before Docker Hub deployment")
+        raise DeploymentError("Docker Hub credentials are not configured. Run: forge configure")
     if not config.dockerhub_repo.startswith(f"{username.lower()}/"):
         raise DeploymentError("dockerhub_repo must be under the authenticated Docker Hub username")
 
